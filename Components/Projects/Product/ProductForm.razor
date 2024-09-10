@@ -48,6 +48,20 @@
                             Label="Select a Product"
                             Class="pb-4"
                         />
+                        <DmnComboBox 
+                            Data=@_allAccessories
+                            @bind-Value:get=@_selectedAccessory
+                            TextFieldName=@nameof(LibraryProduct.Name)
+                            Placeholder="Select an Accessory"
+                            Class="pb-4"
+                        />
+                        <DmnComboBox 
+                            Data=@_allMoldings
+                            @bind-Value:get=@_selectedMolding
+                            TextFieldName=@nameof(LibraryProduct.Name)
+                            Placeholder="Select a Molding"
+                            Class="pb-4"
+                        />
 
                         @if(_selectedCabinet != null) {
                             <DmnComboBox 
@@ -167,8 +181,11 @@
     private ProductFormView _productFormView = new();
 
     private IQueryable<LibraryProduct>? _allCabinets;
-    //private IDictionary<ProductCategoryType, List<LibraryProduct>> _sortedCabinets;
+    private IQueryable<LibraryProduct>? _allAccessories;
+    private IQueryable<LibraryProduct>? _allMoldings;
     private LibraryProduct? _selectedCabinet;
+    private LibraryProduct? _selectedAccessory;
+    private LibraryProduct? _selectedMolding;
 
     private ProductCategoryType? _selectedProductType { get; set; }
     private IQueryable<ProductCategoryType>? _productTypes;
@@ -209,6 +226,12 @@
         _allCabinets = await SmartService.GetClient()
             .Product
             .GetCabinetsAsQueryable();
+        _allAccessories = await SmartService.GetClient()
+            .Product
+            .GetProductsByTypeAsQueryable(CategoryTypes.Accessories);
+        _allMoldings = await SmartService.GetClient()
+            .Product
+            .GetProductsByTypeAsQueryable(CategoryTypes.Moldings);
         @* _sortedCabinets = await SmartService.GetClient()
             .Product
             .GetSortedProducts(cabinets); *@
