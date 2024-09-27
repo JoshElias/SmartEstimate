@@ -1,0 +1,17 @@
+version: '3'
+services:
+  smart-order:
+    image: ${IMAGENAME}:latest
+    build: 
+      context: ..
+      dockerfile: ./.devcontainer/Dockerfile
+      args:
+        SHELL: "/usr/bin/bash"
+        NODE_VERSION: "20"
+    environment:
+      SHELL: "/usr/bin/bash"
+    volumes:
+      - ../SmartOrderApi:/workspaces/SmartOrderApi
+      - ../daemon-dotnet:/workspaces/daemon-dotnet
+    ports:
+      - "3000:3000"
